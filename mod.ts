@@ -1,16 +1,16 @@
 export default (host: string, token: string): Function => {
   return async (
-    attrs: object,
-    body: string,
+    variables: object,
+    query: string,
     skip?: Function,
     end?: Function,
     error: Function = () => {}
   ) => {
-    if (!body) {
+    if (!query) {
       return error("Missing GraphQL Query");
     }
 
-    const [full, operationName] = body.match(/^query (\w+)/i) || [];
+    const [full, operationName] = query.match(/^query (\w+)/i) || [];
 
     if (!operationName) {
       return error("Malformed Query, can't retrieve Operation Name");
@@ -25,8 +25,8 @@ export default (host: string, token: string): Function => {
         },
         body: JSON.stringify({
           operationName,
-          query: body,
-          variables: attrs,
+          query,
+          variables,
         }),
       });
 
