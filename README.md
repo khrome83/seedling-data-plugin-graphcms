@@ -30,3 +30,5 @@ export default graphcms(host, token);
     }
   </:data>
 ```
+
+**Note** - This plugin requires the `--allow-net` command line parameter for Deno.
