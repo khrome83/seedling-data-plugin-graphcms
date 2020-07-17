@@ -16,7 +16,7 @@ export default (host: string, token: string): Function => {
     }
 
     try {
-      const res = await fetch(host, {
+      const result = await fetch(host, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,17 +29,17 @@ export default (host: string, token: string): Function => {
         }),
       });
 
-      if (!res.ok) {
-        if (res.status >= 500) {
+      if (!result.ok) {
+        if (result.status >= 500) {
           return response.retry(
             "Unexpected error, backing off and then trying again"
           );
-        } else if (res.status >= 400 && res.status < 500) {
+        } else if (result.status >= 400 && result.status < 500) {
           return response.error("Network issue, request failed");
         }
       }
 
-      return response.success(res.json());
+      return response.success(result.json());
     } catch (e) {
       return response.error("Something went wrong", e);
     }
