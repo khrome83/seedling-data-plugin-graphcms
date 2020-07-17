@@ -1,23 +1,22 @@
+import {
+  Request,
+  Response,
+} from "https://raw.githubusercontent.com/use-seedling/seedling/master/src/data/index.ts";
+
 export default (host: string, token: string): Function => {
-  return async (
-    variables: object,
-    query: string,
-    skip?: Function,
-    end?: Function,
-    error: Function = () => {}
-  ) => {
-    if (!query) {
-      return error("Missing GraphQL Query");
+  return async (request: Request, response: Response) => {
+    if (!request.body) {
+      return response.error("Missing GraphQL Query");
     }
 
-    const [full, operationName] = query.match(/^query (\w+)/i) || [];
+    const [full, operationName] = request.body.match(/^query (\w+)/i) || [];
 
     if (!operationName) {
-      return error("Malformed Query, can't retrieve Operation Name");
+      return response.error("Malformed Query, can't retrieve Operation Name");
     }
 
     try {
-      const output = await fetch(host, {
+      const res = await fetch(host, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,14 +24,24 @@ export default (host: string, token: string): Function => {
         },
         body: JSON.stringify({
           operationName,
-          query,
-          variables,
+          query: request.body,
+          variables: request.attrs,
         }),
       });
 
-      return output.json();
+      if (!res.ok) {
+        if (res.status >= 500) {
+          return response.retry(
+            "Unexpected error, backing off and then trying again"
+          );
+        } else if (res.status >= 400 && res.status < 500) {
+          return response.error("Network issue, request failed");
+        }
+      }
+
+      return response.success(res.json());
     } catch (e) {
-      return error("Something went wrong", e);
+      return response.error("Something went wrong", e);
     }
   };
 };
