@@ -39,7 +39,7 @@ export default (host: string, token: string): Function => {
         }
       }
 
-      return response.success(await result.json());
+      return response.success(result.json());
     } catch (e) {
       return response.error("Something went wrong", e);
     }
