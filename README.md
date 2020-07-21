@@ -2,22 +2,26 @@
 
 A data plugin to handle queries to Graph CMS
 
-1. Create a new file in `/data` with the name `graphcms.ts`.
+1. (Recommended) Create a file called `.env` at the root of your project. Do not commit this to source control.
+
+```do
+ HOST="https://{region}.graphcms.com/v2/{id}/master"
+ TOKEN="{token}"
+```
+
+- Replace `{region}` with the selected region from Graph CMS.
+- Replace `{id}` with the ID to your endpoint.
+- Replace `{token}` with the JWT token you generate for the endpint.
+
+2. Create a new file in `/data` with the name `graphcms.ts`.
 
 ```ts
 import graphcms from "https://raw.githubusercontent.com/use-seedling/seedling-data-plugin-graphcms/master/mod.ts";
 
-// TODO: Update with ENV example
-
-const host = "https://{region}.graphcms.com/v2/{id}/master";
-
-// TODO: Update where to get JWT API Token
-const token = "{token}";
-
-export default graphcms(host, token);
+export default graphcms(Deno.env.get("HOST"), Deno.env.get("TOKEN"));
 ```
 
-2. Use with seedling data directive. The text body of the directive is the query. Any attributes are used as variables.
+3. Use with seedling data directive. The text body of the directive is the query. Any attributes are used as variables.
 
 ```html
   <:data use="graphcms" id="asdoiasd9012340912jkadsf">
