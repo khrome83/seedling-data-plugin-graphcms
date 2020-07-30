@@ -38,8 +38,8 @@ export default (host: string, token: string): Function => {
           return response.error("Network issue, request failed");
         }
       }
-
-      return response.success(await result.json());
+      const output = await result.json();
+      return response.success(output.data);
     } catch (e) {
       return response.error("Something went wrong", e);
     }
