@@ -1,7 +1,7 @@
 import {
   Request,
   Response,
-} from "https://raw.githubusercontent.com/use-seedling/seedling/master/src/resolvers/data.ts";
+} from "https://raw.githubusercontent.com/use-seedling/seedling/master/mod.ts";
 
 export default (host: string, token: string): Function => {
   return async (request: Request, response: Response) => {
