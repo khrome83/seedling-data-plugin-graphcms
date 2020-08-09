@@ -32,7 +32,7 @@ export default (host: string, token: string): Function => {
       if (!result.ok) {
         if (result.status >= 500) {
           return response.retry(
-            "Unexpected error, backing off and then trying again"
+            "Unexpected error, backing off and then trying again",
           );
         } else if (result.status >= 400 && result.status < 500) {
           return response.error("Network issue, request failed");
