@@ -3,7 +3,9 @@ import type {
   Response,
 } from "https://raw.githubusercontent.com/use-seedling/seedling/master/mod.ts";
 
-export default (host: string, token: string): Function => {
+type Handler = (request: Request, response: Response) => void;
+
+export default (host: string, token: string): Handler => {
   return async (request: Request, response: Response) => {
     if (!request.body) {
       return response.error("Missing GraphQL Query");

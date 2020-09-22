@@ -16,7 +16,7 @@ A data plugin to handle queries to Graph CMS
 2. Create a new file in `/data` with the name `graphcms.ts`.
 
 ```ts
-import graphcms from "https://raw.githubusercontent.com/use-seedling/seedling-data-plugin-graphcms/master/mod.ts";
+import graphcms from "https://deno.land/x/seedling_data_plugin_graphcms@0.0.1/mod.ts";
 
 export default graphcms(Deno.env.get("HOST"), Deno.env.get("TOKEN"));
 ```
